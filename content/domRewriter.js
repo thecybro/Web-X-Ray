@@ -17,24 +17,25 @@ export class DomRewriter {
 
     activate(policy) {
         if (policy === "slow-feed") {
-            document.body.style.scrollBehavior = "smooth";
-            document.body.style.filter = "grayscale(40%)";
+            document.documentElement.style.filter = "grayscale(80%)";
+            document.documentElement.style.transition = "filter 300ms";
         }
 
         if (policy === "simplify-text") {
-            document.querySelectorAll("p").forEach(p => {
-                if (p.innerText.length > 400) {
-                    p.style.maxHeight = "6em";
-                    p.style.overflow = "hidden";
+            document.querySelectorAll("article, main, p").forEach(el => {
+                if (el.innerText.length > 300) {
+                    el.style.lineHeight = "1.8";
+                    el.style.opacity = "0.7";
                 }
             });
         }
 
         if (policy === "highlight-context") {
-            document.body.style.outline = "3px solid #00ffcc";
+            document.body.style.boxShadow = "0 0 0 6px #00ffcc inset";
             setTimeout(() => {
-                document.body.style.outline = "";
-            }, 600);
+                document.body.style.boxShadow = "";
+            }, 500);
         }
     }
+      
 }
