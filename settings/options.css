@@ -1,0 +1,24 @@
+/* settings/options.css */
+body {
+    font-family: system-ui, sans-serif;
+    max-width: 640px;
+    margin: 40px auto;
+}
+
+.row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 0;
+}
+
+label {
+    font-weight: 600;
+}
+
+button {
+    padding: 8px 14px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    background: #fafafa;
+}

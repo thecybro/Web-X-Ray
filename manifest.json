@@ -1,0 +1,49 @@
+{
+  "manifest_version": 3,
+  "name": "Web X-Ray",
+  "description": "It live-rewrites your web based on your intent.", 
+  "version": "1.0",
+  "icons": {
+    "16": "assets/icon16.png",
+    "48": "assets/icon48.png",
+    "128": "assets/icon128.png"
+  },
+
+  "permissions": [
+    "storage",
+    "tabs"
+  ],
+
+  "host_permissions": [
+    "<all_urls>"
+  ],
+
+  "background": {
+    "service_worker": "background/serviceWorker.js",
+    "type": "module"
+  },
+
+  "action": {
+    "default_title": "Reality Layer",
+    "default_icon": "assets/icon48.png"
+  },
+
+  "options_page": "settings/options.html",
+  "content_scripts": [
+    {
+      "matches": [
+        "<all_urls>"
+      ],
+
+      "js": [
+        "content/content.js"
+      ],
+
+      "css": [
+        "content/styles/reality.css"
+      ],
+      
+      "run_at": "document_end"
+    }
+  ]
+}
