@@ -1,4 +1,3 @@
-// content/siteAdapters/genericAdapter.js
 import { youtubeAdapter } from './youtubeAdapter.js';
 import { docsAdapter } from './docsAdapter.js';
 import { twitterAdapter } from './twitterAdapter.js';

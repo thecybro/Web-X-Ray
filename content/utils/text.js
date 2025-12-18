@@ -1,4 +1,3 @@
-// content/utils/text.js
 export function simplifyText(text, level = 3) {
   const maxLen = Math.max(60, 180 - level * 20);
   return text

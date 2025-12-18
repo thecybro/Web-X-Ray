@@ -1,86 +1,34 @@
-// content/utils/observe.js
-export function createObserver(onSignal) {
-  console.log("Signal has been successfully captured:",onSignal({type,data}));
+export function createObserver(engine) {
+  let lastScrollY = window.scrollY;
+  let lastTime = performance.now();
 
-  let lastY = window.scrollY;
-  let lastT = performance.now();
-  let mouseLast = { x: 0, y: 0, t: performance.now() };
-  let selectTimeout = null;
-  let idleTimer = null;
+  window.addEventListener("scroll", () => {
+    const now = performance.now();
+    const dy = Math.abs(window.scrollY - lastScrollY);
+    const dt = now - lastTime;
 
-  function emit(type, data) { 
-    console.log("Signal captured:", type, data);
+    if (dt > 0) {
+      const velocity = Math.min(dy / dt, 2);
+      engine.update("scrollVelocity", velocity);
+    }
     
-    onSignal({ type, data }); 
-  }
+    lastScrollY = window.scrollY;
+    lastTime = now;
+  }, { passive: true });
 
-  function resetIdle() {
-    if (idleTimer) clearTimeout(idleTimer);
-    idleTimer = setTimeout(() => emit('idle', { seconds: 10 }), 10000);
-  }
+  let hoverTimer = null;
 
-  function onScroll() {
-    const now = performance.now();
-    const dy = window.scrollY - lastY;
-    const dt = now - lastT;
-    lastY = window.scrollY;
-    lastT = now;
-    emit('scroll', { deltaY: dy, dt });
-    resetIdle();
-  }
+  document.addEventListener("mousemove", e => {
+    if (hoverTimer) clearTimeout(hoverTimer);
+    hoverTimer = setTimeout(() => {
+      engine.update("hesitation", 1);
+    }, 400);
+  });
 
-  function onMouseMove(e) {
-    const now = performance.now();
-    const dx = e.clientX - mouseLast.x;
-    const dy = e.clientY - mouseLast.y;
-    mouseLast = { x: e.clientX, y: e.clientY, t: now };
-    emit('mousemove', { dx, dy });
-    resetIdle();
-  }
-
-  function onMousePause() {
-    emit('hesitation', {});
-  }
-
-  function onSelection() {
-    if (selectTimeout) clearTimeout(selectTimeout);
-    selectTimeout = setTimeout(() => {
-      const sel = window.getSelection();
-      const len = sel ? String(sel).length : 0;
-      if (len > 0) emit('select', { length: len });
-    }, 300);
-    resetIdle();
-  }
-
-  function onVisibilityChange() {
-    if (document.visibilityState === 'hidden' || document.visibilityState === 'visible') {
-      emit('tab', { state: document.visibilityState });
+  document.addEventListener("selectionchange", () => {
+    const text = document.getSelection()?.toString();
+    if (text && text.length > 3) {
+      engine.update("selection", 1);
     }
-  }
-
-  let hesTimer = null;
-  function scheduleHesitation() {
-    if (hesTimer) clearTimeout(hesTimer);
-    hesTimer = setTimeout(onMousePause, 1500);
-  }
-
-  return {
-    start() {
-      window.addEventListener('scroll', onScroll, { passive: true });
-      window.addEventListener('mousemove', (e) => { onMouseMove(e); scheduleHesitation(); }, { passive: true });
-      document.addEventListener('selectionchange', onSelection);
-      document.addEventListener('visibilitychange', onVisibilityChange);
-      window.addEventListener('keydown', resetIdle, { passive: true });
-      resetIdle();
-    },
-    stop() {
-      window.removeEventListener('scroll', onScroll);
-      window.removeEventListener('mousemove', onMouseMove);
-      document.removeEventListener('selectionchange', onSelection);
-      document.removeEventListener('visibilitychange', onVisibilityChange);
-      window.removeEventListener('keydown', resetIdle);
-      if (idleTimer) clearTimeout(idleTimer);
-      if (hesTimer) clearTimeout(hesTimer);
-    }
-  };
+  });
 }

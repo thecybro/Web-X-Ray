@@ -1,4 +1,3 @@
-// content/siteAdapters/twitterAdapter.js
 export const twitterAdapter = {
     siteId: 'twitter',
     capabilities: { chapters: false, comments: true, playback: false },
@@ -23,7 +22,7 @@ export const twitterAdapter = {
             const btn = t.querySelector('[role="group"]');
             if (btn) btn.insertAdjacentHTML('afterend', '<div style="opacity:.7">Argument tree view active</div>');
         });
-    },
+    }, 
     prioritizeFacts() {
         const claims = document.querySelectorAll('article');
         claims.forEach(c => c.style.filter = 'contrast(1.05) saturate(0.95)');

@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "Web X-Ray",
-  "description": "It live-rewrites your web based on your intent.", 
+  "description": "Live-rewrites the web in real time based on user intent.",
   "version": "1.0",
   "icons": {
     "16": "assets/icon16.png",
@@ -24,25 +24,34 @@
   },
 
   "action": {
-    "default_title": "Reality Layer",
+    "default_title": "Web X-Ray",
     "default_icon": "assets/icon48.png"
   },
 
   "options_page": "settings/options.html",
+
+  "web_accessible_resources": [
+    {
+      "resources": [
+        "content/**/*.js"
+      ],
+      "matches": [
+        "<all_urls>"
+      ]
+    }
+  ],
+
   "content_scripts": [
     {
       "matches": [
         "<all_urls>"
       ],
-
       "js": [
         "content/content.js"
       ],
-
       "css": [
         "content/styles/reality.css"
       ],
-      
       "run_at": "document_end"
     }
   ]

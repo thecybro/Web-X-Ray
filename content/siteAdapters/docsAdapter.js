@@ -1,9 +1,8 @@
-// content/siteAdapters/docsAdapter.js
 export const docsAdapter = {
     siteId: 'docs',
     capabilities: { chapters: false, comments: false, playback: false },
     match(u) {
-        // heuristic: article or docs-like pages
+        // shortcut of article or docs-like pages.
         return /doc|guide|blog|article|readthedocs|developer|docs/i.test(u.host + u.pathname);
     },
     reactiveInputs() { return Array.from(document.querySelectorAll('input, textarea')); },
@@ -36,7 +35,7 @@ export const docsAdapter = {
     },
     collapseThreads() { },
     prioritizeFacts() {
-        // Bolden code blocks, tables and definitions
+        // To make the tables, code blocks and definitions more clear
         const code = document.querySelectorAll('pre, code');
         code.forEach(el => el.style.filter = 'contrast(1.15)');
         const tables = document.querySelectorAll('table');

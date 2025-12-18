@@ -1,15 +1,14 @@
-// content/siteAdapters/youtubeAdapter.js
 export const youtubeAdapter = {
     siteId: 'youtube',
     capabilities: { chapters: true, comments: true, playback: true },
     prepare() {
-        // Disable autoplay invisibly (UI untouched)
+        //To disable autoplay invisibility.
         const tryDisable = () => {
             const toggle = document.querySelector('button[aria-label*="Autoplay"]');
             if (toggle && toggle.getAttribute('aria-pressed') === 'true') toggle.click();
         };
         setInterval(tryDisable, 2000);
-    },
+    }, 
     reactiveInputs() { return []; },
     truncateFeed(count) {
         const items = document.querySelectorAll('ytd-rich-item-renderer,ytd-compact-video-renderer');
@@ -28,7 +27,7 @@ export const youtubeAdapter = {
         if (details) details.style.display = 'block';
     },
     summarizeComments(level) {
-        // Lightweight summarization: surface top-level condensed comments
+        // To lightly summarize the surface level comments
         const comments = Array.from(document.querySelectorAll('#content-text')).slice(0, 20);
         comments.forEach(c => {
             const text = c.textContent || '';
@@ -38,7 +37,7 @@ export const youtubeAdapter = {
     adjustPlaybackSpeed(base) {
         const video = document.querySelector('video');
         if (video) {
-            // Nudge speed based on short pauses (buffering/hesitations)
+            // Gently adjust speed based on short pauses
             const paused = video.paused;
             video.playbackRate = paused ? Math.max(1.0, base - 0.2) : Math.min(2.5, base + 0.2);
         }

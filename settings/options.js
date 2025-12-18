@@ -1,4 +1,3 @@
-// settings/options.js
 export async function loadSettings() {
     const { rl_settings } = await chrome.storage.local.get("rl_settings");
     const s = rl_settings || {};

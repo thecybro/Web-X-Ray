@@ -1,4 +1,3 @@
-// content/utils/ui.js
 export function applyDesaturation(root, level = 0.5) {
   root.style.filter = `saturate(${Math.max(0.3, 1 - level)}) grayscale(${Math.min(0.6, level)})`;
 }

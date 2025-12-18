@@ -1,81 +1,67 @@
-// content/content.js
 (async function main() {
-    console.log("Web X-Ray has been injected on:", location.href)
+    const XRAY_TAG = "[Web-X-Ray]";
+
+    console.log(`${XRAY_TAG} injected on:`, location.href);
+
+    // HARD visual proof.
+    const badge = document.createElement("div");
+    badge.textContent = "XRAY ACTIVE";
+    Object.assign(badge.style, {
+        position: "fixed",
+        bottom: "12px",
+        right: "12px",
+        zIndex: 999999,
+        background: "rgba(0,0,0,0.7)",
+        color: "#00ffcc",
+        padding: "6px 10px",
+        fontSize: "12px",
+        fontFamily: "monospace",
+        borderRadius: "6px"
+    }); 
+    document.documentElement.appendChild(badge);
 
     const { rl_settings } = await chrome.storage.local.get("rl_settings");
-    const cfg = rl_settings || { enabled: true, intensity: 0.7 };
+    const cfg = rl_settings ?? { enabled: true, intensity: 0.7 };
 
-    if (!cfg.enabled) return;
-
-    // Importing modules dynamically, cuz yk..
-    const { createObserver } = await import(chrome.runtime.getURL("content/utils/observe.js"));
-    const { IntentEngine } = await import(chrome.runtime.getURL("content/intentEngine.js"));
-    const { DomRewriter } = await import(chrome.runtime.getURL("content/domRewriter.js"));
-    const { PolicyGraph } = await import(chrome.runtime.getURL("content/policyGraph.js"));
-    const { detectAdapter } = await import(chrome.runtime.getURL("content/siteAdapters/genericAdapter.js"));
-
-    const adapter = detectAdapter(location.href);
-    const policy = new PolicyGraph(cfg, adapter.capabilities);
-    const engine = new IntentEngine({ timeOfDay: new Date().getHours(), site: adapter.siteId });
-    const rewriter = new DomRewriter(policy, adapter);
-
-    const observer = createObserver((signal) => {
-        const state = engine.ingest(signal);
-        rewriter.apply(state);
-        chrome.runtime.sendMessage({ type: "RL_TAB_STATE", payload: { state, url: location.href } }).catch(() => { });
-    });
-
-    
-    adapter.prepare?.();
-    observer.start();
-
-    // content/content.js (inside main())
-    function createDebugHUD() {
-        const hud = document.createElement("div");
-        hud.id = "rl-debug";
-        hud.style.cssText = `
-            position: fixed;
-            bottom: 10px;
-            right: 10px;
-            background: rgba(0,0,0,0.7);
-            color: #0f0;
-            font: 12px monospace;
-            padding: 8px;
-            border-radius: 6px;
-            z-index: 999999;
-        `;
-        document.body.appendChild(hud);
-        return hud;
+    if (!cfg.enabled) {
+        badge.textContent = "XRAY DISABLED";
+        return;
     }
 
-    const hud = createDebugHUD();
+    // For dynamic imports with failures being visible
+    let IntentEngine, DomRewriter, PolicyGraph, createObserver;
 
-    observer.start();
+    try {
+        ({ createObserver } = await import(chrome.runtime.getURL("content/utils/observe.js")));
+        ({ IntentEngine } = await import(chrome.runtime.getURL("content/intentEngine.js")));
+        ({ DomRewriter } = await import(chrome.runtime.getURL("content/domRewriter.js")));
+        ({ PolicyGraph } = await import(chrome.runtime.getURL("content/policyGraph.js")));
+    } catch (err) {
+        console.error(`${XRAY_TAG} module load failure`, err);
+        badge.textContent = "XRAY ERROR";
+        return;
+    }
 
-    // Update HUD whenever state changes
-    observer.start = () => {
-        window.addEventListener("scroll", () => updateHUD());
-        window.addEventListener("mousemove", () => updateHUD());
-        document.addEventListener("selectionchange", () => updateHUD());
-    };
+    const policyGraph = new PolicyGraph();
+    const engine = new IntentEngine({ intensity: cfg.intensity });
+    const rewriter = new DomRewriter(policyGraph);
 
-    function updateHUD() {
+    console.log(`${XRAY_TAG} engine online`, engine);
+
+    // To observe the intent of user
+    createObserver(engine);
+
+    // For live telemetry
+    setInterval(() => {
         const state = engine.state;
-        hud.textContent = Object.entries(state)
-            .map(([k, v]) => `${k}: ${(v * 100).toFixed(0)}%`)
-            .join("\n");
-    }
+        const summary = Object.entries(state)
+            .map(([k, v]) => `${k}:${Math.round(v * 100)}%`)
+            .join(" ");
 
-    console.log("Reality Layer content script injected on:", location.href);
-    console.log("IntentEngine initialized:", engine);
+        badge.textContent = summary || "XRAY IDLE";
+        console.log(`${XRAY_TAG} intent`, state);
+    }, 1000);
 
-    const state = engine.state;
-    const summary = Object.entries(state)
-
-    .map(([k, v]) => `${k}: ${(v * 100).toFixed(0)}%`)
-    .join(" | ");
-
-    hud.textContent = summary;
-    console.log("HUD update:", summary);
+    rewriter.apply(engine.state);
 
 })();
