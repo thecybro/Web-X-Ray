@@ -5,7 +5,7 @@ It observes signals like scroll velocity, mouse hesitations, and text selections
 
 
 ## Repository Structure
-
+```
 Web X-Ray/
 ├─ manifest.json
 ├─ README.md
@@ -37,7 +37,7 @@ Web X-Ray/
 │  └─ options.css
 └─ storage/
    └─ store.js
-
+```
 
 ## Installation
 
