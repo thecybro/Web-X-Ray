@@ -3,10 +3,10 @@
   "name": "Web X-Ray",
   "description": "Live-rewrites the web in real time based on user intent.",
   "version": "1.0",
-  "icons": {
+  "icons":  {
     "16": "assets/icon16.png",
     "48": "assets/icon48.png",
-    "128": "assets/icon128.png"
+    "128":  "assets/icon128.png"
   },
 
   "permissions": [
@@ -19,7 +19,7 @@
   ],
 
   "background": {
-    "service_worker": "background/serviceWorker.js",
+    "service_worker": "background/serviceWorker. js",
     "type": "module"
   },
 
@@ -33,15 +33,24 @@
   "web_accessible_resources": [
     {
       "resources": [
-        "content/**/*.js"
+        "content/intentEngine.js",
+        "content/domRewriter.js",
+        "content/policyGraph.js",
+        "content/utils/observe.js",
+        "content/utils/text.js",
+        "content/utils/ui.js",
+        "content/siteAdapters/genericAdapter.js",
+        "content/siteAdapters/youtubeAdapter.js",
+        "content/siteAdapters/docsAdapter.js",
+        "content/siteAdapters/twitterAdapter.js"
       ],
-      "matches": [
+      "matches":  [
         "<all_urls>"
       ]
     }
   ],
 
-  "content_scripts": [
+  "content_scripts":  [
     {
       "matches": [
         "<all_urls>"
