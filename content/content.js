@@ -1,11 +1,11 @@
 (async function main() {
-    const XRAY_TAG = "[Web-X-Ray]";
+    const XRAY_TAG = "Web X-Ray";
 
     console.log(`${XRAY_TAG} injected on:`, location.href);
 
     // HARD visual proof.
     const badge = document.createElement("div");
-    badge.textContent = "XRAY ACTIVE";
+    badge.textContent = "X-RAY ACTIVE";
     Object.assign(badge.style, {
         position: "fixed",
         bottom: "12px",
@@ -54,14 +54,15 @@
     // For live telemetry
     setInterval(() => {
         const state = engine.state;
+
+        rewriter.apply(engine.state);
+
         const summary = Object.entries(state)
             .map(([k, v]) => `${k}:${Math.round(v * 100)}%`)
             .join(" ");
 
         badge.textContent = summary || "XRAY IDLE";
         console.log(`${XRAY_TAG} intent`, state);
-    }, 1000);
-
-    rewriter.apply(engine.state);
+    }, 500);
 
 })();
