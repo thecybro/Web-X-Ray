@@ -23,18 +23,18 @@ export class DomRewriter {
 
         if (policy === "simplify-text") {
             document.querySelectorAll("article, main, p").forEach(el => {
-                if (el.innerText.length > 300) {
+                if (el.innerText.length > 100) {
                     el.style.lineHeight = "1.8";
-                    el.style.opacity = "0.7";
+                    el.style.opacity = "0.4";
                 }
             });
         }
 
         if (policy === "highlight-context") {
-            document.body.style.boxShadow = "0 0 0 6px #00ffcc inset";
+            document.body.style.boxShadow = "0 0 0 6px #c4fdf2ff inset";
             setTimeout(() => {
                 document.body.style.boxShadow = "";
-            }, 500);
+            }, 100);
         }
     }
       

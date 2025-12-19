@@ -22,7 +22,7 @@ export function createObserver(engine) {
     if (hoverTimer) clearTimeout(hoverTimer);
     hoverTimer = setTimeout(() => {
       engine.update("hesitation", 1);
-    }, 400);
+    }, 200);
   });
 
   document.addEventListener("selectionchange", () => {

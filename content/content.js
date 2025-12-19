@@ -9,7 +9,7 @@
     Object.assign(badge.style, {
         position: "fixed",
         bottom: "12px",
-        right: "12px",
+        right: "12px", 
         zIndex: 999999,
         background: "rgba(0,0,0,0.7)",
         color: "#00ffcc",

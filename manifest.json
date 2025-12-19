@@ -19,7 +19,7 @@
   ],
 
   "background": {
-    "service_worker": "background/serviceWorker. js",
+    "service_worker": "background/serviceWorker.js",
     "type": "module"
   },
 

@@ -2,7 +2,7 @@ export class PolicyGraph {
     evaluate(intentState) {
         const policies = [];
 
-        if (intentState.scrollVelocity > 0.4) {
+        if (intentState.scrollVelocity > 0.6) {
             policies.push("slow-feed");
         }
 
