@@ -34,7 +34,7 @@ export class DomRewriter {
             document.body.style.boxShadow = "0 0 0 6px #c4fdf2ff inset";
             setTimeout(() => {
                 document.body.style.boxShadow = "";
-            }, 100);
+            }, 1000);
         }
     }
       
