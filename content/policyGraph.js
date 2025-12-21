@@ -2,11 +2,11 @@ export class PolicyGraph {
     evaluate(intentState) {
         const policies = [];
 
-        if (intentState.scrollVelocity > 0.8) {
+        if (intentState.scrollVelocity > 0.85) {
             policies.push("slow-feed");
         }
 
-        if (intentState.hesitation > 0.6) {
+        if (intentState.hesitation > 0.55) {
             policies.push("simplify-text");
         }
 

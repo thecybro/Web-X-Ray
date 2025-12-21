@@ -7,7 +7,7 @@ export class IntentEngine {
             selection: 0
         };
 
-        setInterval(() => this.decay(), 600);
+        setInterval(() => this.decay(), 500);
     }
 
     update(type, value) {

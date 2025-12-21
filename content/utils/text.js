@@ -13,3 +13,4 @@ export function neutralizeHeadline(text, maxLen = 60) {
   if (t.length > maxLen) t = t.slice(0, maxLen) + "…";
   return t;
 }
+

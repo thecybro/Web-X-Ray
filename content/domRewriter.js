@@ -24,8 +24,8 @@ export class DomRewriter {
         if (policy === "simplify-text") {
             document.querySelectorAll("article, main, p").forEach(el => {
                 if (el.innerText.length > 100) {
-                    el.style.lineHeight = "1.8";
-                    el.style.opacity = "0.4";
+                    el.style.lineHeight = "2";
+                    el.style.opacity = "0.2";
                 }
             });
         }

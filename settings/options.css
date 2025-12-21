@@ -21,3 +21,7 @@ button {
     border-radius: 6px;
     background: #fafafa;
 }
+
+body {
+    font-family: sans-serif;
+}

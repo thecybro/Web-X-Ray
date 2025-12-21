@@ -5,17 +5,17 @@
 
     // HARD visual proof.
     const badge = document.createElement("div");
-    badge.textContent = "X-RAY ACTIVE";
+    badge.textContent = "WEB X-RAY ACTIVE";
     Object.assign(badge.style, {
         position: "fixed",
         bottom: "12px",
         right: "12px", 
         zIndex: 999999,
-        background: "rgba(0,0,0,0.7)",
-        color: "#00ffcc",
+        background: "rgba(0, 0, 0, 0.54)",
+        color: "#47fcd8ff",
         padding: "6px 10px",
         fontSize: "12px",
-        fontFamily: "monospace",
+        fontFamily: "sans-serif",
         borderRadius: "6px"
     }); 
     document.documentElement.appendChild(badge);

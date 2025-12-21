@@ -2,7 +2,7 @@ export function applyDesaturation(root, level = 0.5) {
   root.style.filter = `saturate(${Math.max(0.3, 1 - level)}) grayscale(${Math.min(0.6, level)})`;
 }
 
-export function injectDelay(nodes = [], ms = 800) {
+export function injectDelay(nodes = [], ms = 600) {
   nodes.forEach(n => {
     const orig = n.onclick;
     n.addEventListener('click', (e) => {
